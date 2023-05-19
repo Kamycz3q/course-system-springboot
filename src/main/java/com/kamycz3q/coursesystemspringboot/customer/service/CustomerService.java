@@ -2,6 +2,7 @@ package com.kamycz3q.coursesystemspringboot.customer.service;
 
 import com.kamycz3q.coursesystemspringboot.customer.Customer;
 import com.kamycz3q.coursesystemspringboot.customer.CustomerRepository;
+import com.kamycz3q.coursesystemspringboot.customer.enums.AccountPermissions;
 import com.kamycz3q.coursesystemspringboot.customer.records.CreateCustomerRequest;
 import com.kamycz3q.coursesystemspringboot.customer.records.CustomerDTO;
 import com.kamycz3q.coursesystemspringboot.personalData.personalDataObject.PersonalData;
@@ -13,6 +14,7 @@ import com.kamycz3q.coursesystemspringboot.personalData.service.PersonalDataServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -123,4 +125,26 @@ public class CustomerService {
         return optionalCustomer.get();
     }
 
+
+    public void performActionOnCustomer(Long customerId, String action) throws Exception {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        if (optionalCustomer.isEmpty()) {
+            throw new Exception("Not valid user");
+        }
+        Customer customer = optionalCustomer.get();
+
+        switch(action) {
+            case "add-lecturer": {
+                List<AccountPermissions> accountPermissions = new ArrayList<>();
+                if (customer.getAccountPermissions() != null) {
+                    accountPermissions = customer.getAccountPermissions();
+                }
+                accountPermissions.add(AccountPermissions.LECTURER);
+                customer.setAccountPermissions(accountPermissions);
+            }
+            ///wiecej w przyszlosci
+        }
+        System.out.println(customer.toString());
+        customerRepository.save(customer);
+    }
 }

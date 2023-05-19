@@ -4,4 +4,5 @@ import com.kamycz3q.coursesystemspringboot.personalData.personalDataObject.Perso
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PersonalDataRepository extends JpaRepository<PersonalData, Long> {
+    PersonalData findPersonalDataByPesel(int i);
 }
