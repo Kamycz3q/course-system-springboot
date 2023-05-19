@@ -4,4 +4,5 @@ import com.kamycz3q.coursesystemspringboot.personalData.personalDataObject.Perso
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PersonalDataCompanyRepository extends JpaRepository<PersonalDataCompany, Long> {
+    PersonalDataCompany findPersonalDataCompanyByNip(Long aLong);
 }
