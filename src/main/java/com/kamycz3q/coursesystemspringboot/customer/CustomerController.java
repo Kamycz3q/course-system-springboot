@@ -45,6 +45,10 @@ public class CustomerController {
         customerService.updateCustomerPassword(Long.valueOf(userId), updatePasswordRequest.oldPassword(), updatePasswordRequest.newPassword());
     }
 
+    @PatchMapping("/{id}/{action}")
+    public void performAction(@PathVariable("id") String id, @PathVariable("action") String action) throws Exception {
+        customerService.performActionOnCustomer(Long.valueOf(id), action);
+    }
 
 }
 
