@@ -1,10 +1,9 @@
 package com.kamycz3q.coursesystemspringboot.customer;
 
 
-import com.kamycz3q.coursesystemspringboot.customer.records.CreateCustomerRequest;
-import com.kamycz3q.coursesystemspringboot.customer.records.CustomerDTO;
-import com.kamycz3q.coursesystemspringboot.customer.records.UpdatePasswordRequest;
-import com.kamycz3q.coursesystemspringboot.customer.service.CustomerService;
+import com.kamycz3q.coursesystemspringboot.customer.models.CreateCustomerRequest;
+import com.kamycz3q.coursesystemspringboot.customer.models.CustomerDTO;
+import com.kamycz3q.coursesystemspringboot.customer.models.UpdatePasswordRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
