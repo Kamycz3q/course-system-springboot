@@ -1,6 +1,7 @@
 package com.kamycz3q.coursesystemspringboot.customer.companyData;
 
 
+import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CompanyDataDTO;
 import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CreateCompanyDataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -25,17 +26,17 @@ public class CompanyDataController {
     }
 
     @GetMapping("/{id}")
-    public CompanyData getPersonalDataCompany(@PathVariable("id") String id) {
+    public CompanyDataDTO getPersonalDataCompany(@PathVariable("id") String id) {
         return companyDataService.getCompanyData(Long.parseLong(id));
     }
 
     @PostMapping("")
-    public CompanyData createPersonalDataForCompany(@NonNull @RequestBody CreateCompanyDataRequest req) {
+    public CompanyDataDTO createPersonalDataForCompany(@NonNull @RequestBody CreateCompanyDataRequest req) {
         return companyDataService.createCompanyData(req);
     }
 
     @PatchMapping("/{id}")
-    public CompanyData createPersonalDataForCompany(@PathVariable("id") String id, @NonNull @RequestBody CreateCompanyDataRequest req) {
+    public CompanyDataDTO createPersonalDataForCompany(@PathVariable("id") String id, @NonNull @RequestBody CreateCompanyDataRequest req) {
         return companyDataService.editCompanyData(Long.parseLong(id), req);
     }
 

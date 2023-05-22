@@ -1,5 +1,6 @@
 package com.kamycz3q.coursesystemspringboot.customer.companyData;
 
+import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CompanyDataDTO;
 import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CreateCompanyDataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,18 @@ public class CompanyDataService {
     public CompanyDataService(CompanyDataRepository companyDataRepository) {
         this.companyDataRepository = companyDataRepository;
     }
+    private CompanyDataDTO getCompanyDataDTO(CompanyData companyData) {
+        return new CompanyDataDTO(
+                companyData.getId(),
+                companyData.getCustomerId(),
+                companyData.getEmail(),
+                companyData.getCompanyName(),
+                companyData.getCity(),
+                companyData.getAddress(),
+                companyData.getPostCode(),
+                companyData.getNip()
+        );
+    }
     private CompanyData setCompanyDataForObject(CompanyData companyData, CreateCompanyDataRequest req) {
         companyData.setCompanyName(req.companyName());
         companyData.setEmail(req.email());
@@ -24,18 +37,18 @@ public class CompanyDataService {
         companyData.setNip(req.nip());
         return companyData;
     }
-    public CompanyData createCompanyData(CreateCompanyDataRequest req) {
+    public CompanyDataDTO createCompanyData(CreateCompanyDataRequest req) {
         CompanyData companyData = setCompanyDataForObject(new CompanyData(), req);
-        return companyDataRepository.save(companyData);
+        return getCompanyDataDTO(companyDataRepository.save(companyData));
     }
 
-    public CompanyData editCompanyData(Long id, CreateCompanyDataRequest req) {
+    public CompanyDataDTO editCompanyData(Long id, CreateCompanyDataRequest req) {
         Optional<CompanyData> optionalPersonalDataCompany = companyDataRepository.findById(id);
         if (optionalPersonalDataCompany.isEmpty()) {
             return null;
         }
         CompanyData companyData = setCompanyDataForObject(optionalPersonalDataCompany.get(), req);
-        return companyDataRepository.save(companyData);
+        return getCompanyDataDTO(companyDataRepository.save(companyData));
     }
 
     public void deleteCompanyData(Long id) {
@@ -50,9 +63,9 @@ public class CompanyDataService {
         return companyDataRepository.findAll();
     }
 
-    public CompanyData getCompanyData(Long id) {
+    public CompanyDataDTO getCompanyData(Long id) {
         Optional<CompanyData> optionalPersonalDataCompany = companyDataRepository.findById(id);
-        return optionalPersonalDataCompany.orElse(null);
+        return getCompanyDataDTO(optionalPersonalDataCompany.orElse(null));
     }
 
 }
