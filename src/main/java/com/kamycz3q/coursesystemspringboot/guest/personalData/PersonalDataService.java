@@ -1,16 +1,15 @@
-package com.kamycz3q.coursesystemspringboot.customer.personalData;
+package com.kamycz3q.coursesystemspringboot.guest.personalData;
 
-import com.kamycz3q.coursesystemspringboot.customer.companyData.CompanyData;
-import com.kamycz3q.coursesystemspringboot.customer.companyData.CompanyDataRepository;
-import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CreateCompanyDataRequest;
-import com.kamycz3q.coursesystemspringboot.customer.personalData.models.CreatePersonalRequest;
-import com.kamycz3q.coursesystemspringboot.customer.personalData.models.PersonalDataDTO;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.CompanyData;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.CompanyDataRepository;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.models.CreateCompanyDataRequest;
+import com.kamycz3q.coursesystemspringboot.guest.personalData.models.CreatePersonalRequest;
+import com.kamycz3q.coursesystemspringboot.guest.personalData.models.PersonalDataDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,29 +77,11 @@ public class PersonalDataService {
         }
         personalData.setName(req.name());
         personalData.setSurname(req.surname());
-        personalData.setEmail(req.email());
-        personalData.setBirthDate(new Date(req.birthDateTimestamp()));
-        personalData.setCity(req.city());
+        personalData.setContactData(req.contactData());
         personalData.setAddress(req.address());
-        personalData.setPostCode(req.postcode());
+        //Address
         personalData.setPesel(req.pesel());
-        if (req.companyData() != null) {
-            CompanyData companyData = new CompanyData();
-            CreateCompanyDataRequest data_companyData = req.companyData();
-            if (validateCompanyDataNIP(data_companyData.nip())) {
-                companyData.setCompanyName(data_companyData.companyName());
-                companyData.setNip(data_companyData.nip());
-                companyData.setAddress(data_companyData.address());
-                companyData.setCity(data_companyData.city());
-                companyData.setAddress(data_companyData.address());
-                companyData.setPostCode(data_companyData.postcode());
-                companyData = companyDataRepository.save(companyData);
-                personalData.setCompanyId(companyData.getId());
-            } else {
-                return null;
-            }
 
-        }
         return personalData;
     }
     @SuppressWarnings("UnnecessaryLocalVariable")
@@ -120,10 +101,8 @@ public class PersonalDataService {
         PersonalDataDTO personalDataDTO = new PersonalDataDTO(
                 personalData.getName(),
                 personalData.getSurname(),
-                personalData.getEmail(),
-                personalData.getCity(),
                 personalData.getAddress(),
-                personalData.getPostCode(),
+                personalData.getContactData(),
                 companyData
         );
         return personalDataDTO;
@@ -134,6 +113,28 @@ public class PersonalDataService {
         if (setPersonalDataForObject(personalData, req) == null) {
             return null;
         }
+        if (req.companyData() != null) {
+            CompanyData companyData = new CompanyData();
+            CreateCompanyDataRequest data_companyData = req.companyData();
+            if (data_companyData.nip() == null && data_companyData.regon() == null) {
+                return null;
+            }
+            if (data_companyData.regon() != null && data_companyData.nip() != null) {
+                return null;
+            }
+            if (validateCompanyDataNIP(data_companyData.nip()) || validateCompanyDataNIP(data_companyData.regon())) {
+                companyData.setCompanyName(data_companyData.companyName());
+                companyData.setNip(data_companyData.nip());
+                companyData.setRegon(data_companyData.regon());
+                companyData.setAddress(data_companyData.address());
+                companyData.setContactData(data_companyData.contactData());
+                companyData.setPersonalDataId(personalData.getId());
+                personalData.setCompanyId(companyDataRepository.save(companyData).getId());
+            } else {
+                return null;
+            }
+
+        }
         return  getPersonalDataDTO( personalDataRepository.save(personalData).getId());
     }
 
@@ -143,7 +144,24 @@ public class PersonalDataService {
             return null;
         }
         PersonalData personalData = setPersonalDataForObject(personalDataOptional.get(), req);
-        personalDataRepository.save(personalData);
+        personalData = personalDataRepository.save(personalData);
+        if (req.companyData() != null) {
+            CompanyData companyData = new CompanyData();
+            CreateCompanyDataRequest data_companyData = req.companyData();
+            if (validateCompanyDataNIP(data_companyData.nip()) || validateCompanyDataNIP(data_companyData.regon())) {
+                companyData.setCompanyName(data_companyData.companyName());
+                companyData.setNip(data_companyData.nip());
+                companyData.setRegon(data_companyData.regon());
+                companyData.setAddress(data_companyData.address());
+                companyData.setContactData(data_companyData.contactData());
+                companyData.setPersonalDataId(personalData.getId());
+                personalData.setCompanyId(companyDataRepository.save(companyData).getId());
+                personalDataRepository.save(personalData);
+            } else {
+                return null;
+            }
+
+        }
         return getPersonalDataDTO(personalData.getId());
     }
 

@@ -1,7 +1,7 @@
-package com.kamycz3q.coursesystemspringboot.customer.companyData;
+package com.kamycz3q.coursesystemspringboot.guest.companyData;
 
-import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CompanyDataDTO;
-import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CreateCompanyDataRequest;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.models.CompanyDataDTO;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.models.CreateCompanyDataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,25 +19,28 @@ public class CompanyDataService {
     private CompanyDataDTO getCompanyDataDTO(CompanyData companyData) {
         return new CompanyDataDTO(
                 companyData.getId(),
-                companyData.getCustomerId(),
-                companyData.getEmail(),
+                companyData.getPersonalDataId(),
                 companyData.getCompanyName(),
-                companyData.getCity(),
                 companyData.getAddress(),
-                companyData.getPostCode(),
-                companyData.getNip()
+                companyData.getContactData(),
+                companyData.getNip(),
+                companyData.getRegon()
         );
     }
     private CompanyData setCompanyDataForObject(CompanyData companyData, CreateCompanyDataRequest req) {
         companyData.setCompanyName(req.companyName());
-        companyData.setEmail(req.email());
-        companyData.setCity(req.city());
+        companyData.setPersonalDataId(req.personalDataId());
+        companyData.setCompanyName(req.companyName());
         companyData.setAddress(req.address());
-        companyData.setPostCode(req.postcode());
+        companyData.setContactData(req.contactData());
         companyData.setNip(req.nip());
+        companyData.setRegon(req.regon());
         return companyData;
     }
     public CompanyDataDTO createCompanyData(CreateCompanyDataRequest req) {
+        if (req.nip() == null & req.regon() == null) {
+            return null;
+        }
         CompanyData companyData = setCompanyDataForObject(new CompanyData(), req);
         return getCompanyDataDTO(companyDataRepository.save(companyData));
     }

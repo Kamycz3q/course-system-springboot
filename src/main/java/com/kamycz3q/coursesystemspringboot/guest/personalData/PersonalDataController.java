@@ -1,8 +1,8 @@
-package com.kamycz3q.coursesystemspringboot.customer.personalData;
+package com.kamycz3q.coursesystemspringboot.guest.personalData;
 
 
-import com.kamycz3q.coursesystemspringboot.customer.personalData.models.CreatePersonalRequest;
-import com.kamycz3q.coursesystemspringboot.customer.personalData.models.PersonalDataDTO;
+import com.kamycz3q.coursesystemspringboot.guest.personalData.models.CreatePersonalRequest;
+import com.kamycz3q.coursesystemspringboot.guest.personalData.models.PersonalDataDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
-package com.kamycz3q.coursesystemspringboot.customer.companyData;
+package com.kamycz3q.coursesystemspringboot.guest.companyData;
 
 
-import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CompanyDataDTO;
-import com.kamycz3q.coursesystemspringboot.customer.companyData.models.CreateCompanyDataRequest;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.models.CompanyDataDTO;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.models.CreateCompanyDataRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
