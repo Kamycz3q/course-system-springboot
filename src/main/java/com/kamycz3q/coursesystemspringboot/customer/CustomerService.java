@@ -3,8 +3,8 @@ package com.kamycz3q.coursesystemspringboot.customer;
 import com.kamycz3q.coursesystemspringboot.customer.enums.AccountPermissions;
 import com.kamycz3q.coursesystemspringboot.customer.models.CreateCustomerRequest;
 import com.kamycz3q.coursesystemspringboot.customer.models.CustomerDTO;
-import com.kamycz3q.coursesystemspringboot.customer.personalData.PersonalData;
-import com.kamycz3q.coursesystemspringboot.customer.personalData.PersonalDataRepository;
+import com.kamycz3q.coursesystemspringboot.guest.personalData.PersonalData;
+import com.kamycz3q.coursesystemspringboot.guest.personalData.PersonalDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.kamycz3q.coursesystemspringboot.customer.companyData;
+package com.kamycz3q.coursesystemspringboot.guest.companyData;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

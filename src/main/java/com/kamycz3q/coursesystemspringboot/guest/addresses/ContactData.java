@@ -1,4 +1,4 @@
-package com.kamycz3q.coursesystemspringboot.customer.personalData;
+package com.kamycz3q.coursesystemspringboot.guest.addresses;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,20 +7,16 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
-
+@Entity
 @Getter
 @Setter
-@Entity
-public class PersonalData {
+public class ContactData {
     @Id
     @GeneratedValue(
             strategy = GenerationType.AUTO
     )
     private Long id;
-    private String name, surname, email;
-    private Date birthDate;
-    private String city, address, postCode;
-    private String pesel;
-    private Long companyId;
+    private String phoneNumber;
+    private String email;
+
 }
