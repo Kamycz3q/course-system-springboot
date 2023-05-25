@@ -1,10 +1,9 @@
 package com.kamycz3q.coursesystemspringboot.customer;
 
 import com.kamycz3q.coursesystemspringboot.customer.enums.AccountPermissions;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.kamycz3q.coursesystemspringboot.guest.companyData.CompanyData;
+import com.kamycz3q.coursesystemspringboot.guest.personalData.PersonalData;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +18,8 @@ public class Customer {
             strategy = GenerationType.AUTO
     )
     private Long id;
-    private Long personalDataId;
-    private String login, password;
-    private List<AccountPermissions> accountPermissions;
+    @Embedded
+    private PersonalData personalData;
+    @Embedded
+    private CompanyData companyData;
 }
