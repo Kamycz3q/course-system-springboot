@@ -29,14 +29,6 @@ public class LecturerService {
         }
         Customer customer = optionalCustomer.get();
         //check permissions
-        if (customer.getAccountPermissions() != null) {
-            if (!customer.getAccountPermissions().contains(AccountPermissions.LECTURER)) {
-                throw new Exception("customer dont have permissions for creating lecturer!");
-
-            }
-        } else {
-            throw new Exception("customer dont have permissions for creating lecturer!");
-        }
 
         //check is there no lecturer account
         Lecturer optionalLecturer = lecturerRepository.getLecturerByCustomerId(userId);

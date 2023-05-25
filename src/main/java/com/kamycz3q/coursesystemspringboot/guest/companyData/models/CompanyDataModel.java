@@ -2,13 +2,13 @@ package com.kamycz3q.coursesystemspringboot.guest.companyData.models;
 
 import com.kamycz3q.coursesystemspringboot.guest.addresses.Address;
 import com.kamycz3q.coursesystemspringboot.guest.addresses.ContactData;
+import com.kamycz3q.coursesystemspringboot.guest.addresses.models.AddressModel;
+import com.kamycz3q.coursesystemspringboot.guest.addresses.models.ContactDataModel;
 
-public record CompanyDataDTO (
-        Long id,
-        Long personalDataId,
+public record CompanyDataModel(
         String companyName,
-        Address address,
-        ContactData contactData,
+        AddressModel address,
+        ContactDataModel contactData,
         String nip,
         String regon
 ){

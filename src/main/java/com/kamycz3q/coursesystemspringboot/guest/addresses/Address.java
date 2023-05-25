@@ -1,27 +1,18 @@
 package com.kamycz3q.coursesystemspringboot.guest.addresses;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Embeddable
 @Getter
 @Setter
 public class Address {
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO
-    )
-    private Long id;
-
-    private String street;
-    private String buildingNo;
-    private String flatNo;
-    private String postalCode;
-    private String city;
-    private String country;
+    @Column(insertable=false, updatable=false)private String street;
+    @Column(insertable=false, updatable=false)private String buildingNo;
+    @Column(insertable=false, updatable=false)private String flatNo;
+    @Column(insertable=false, updatable=false)private String postalCode;
+    @Column(insertable=false, updatable=false)private String city;
+    @Column(insertable=false, updatable=false)private String country;
 
 }
