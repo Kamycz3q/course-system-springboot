@@ -1,6 +1,7 @@
 package com.kamycz3q.coursesystemspringboot.course.api;
 
 
+import com.kamycz3q.coursesystemspringboot.course.enrollment.absence.dto.CreateAbsenceRequest;
 import com.kamycz3q.coursesystemspringboot.course.logic.CourseService;
 import com.kamycz3q.coursesystemspringboot.course.api.dto.CourseDTO;
 import com.kamycz3q.coursesystemspringboot.course.api.dto.CreateCourseRequest;
@@ -62,6 +63,14 @@ public class CourseController {
     public void setDate(@PathVariable("id") Long id, @PathVariable("startTimestamp") Timestamp startTimestamp, @PathVariable("endTimestamp") Timestamp endTimestamp) {
         courseService.setDate(id, startTimestamp, endTimestamp);
     }
-    //dla czlonka
+
+
+    //absence
+    @PostMapping("/edit/absence")
+    public void addAbsence(@RequestBody CreateAbsenceRequest req) {
+
+    }
+
+
 
 }
