@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LecturerRepository extends JpaRepository<LecturerEntity, Long> {
-    public LecturerEntity getLecturerByCustomerId(Long customerID);
+    LecturerEntity getLecturerByCustomerId(Long customerID);
 }

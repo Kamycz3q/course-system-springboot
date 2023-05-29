@@ -1,4 +1,4 @@
-package com.kamycz3q.coursesystemspringboot.course;
+package com.kamycz3q.coursesystemspringboot.course.persistence;
 
 import com.kamycz3q.coursesystemspringboot.lecturer.persistence.LecturerEntity;
 import jakarta.persistence.*;
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Setter
-public class Course {
+public class CourseEntity {
     @Id
     @GeneratedValue
     private Long id;

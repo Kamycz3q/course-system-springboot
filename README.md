@@ -1,5 +1,5 @@
-# course-system-springboot
-course system practises project
+# courseEntity-system-springboot
+courseEntity system practises project
 
 C1 i C2 https://media.discordapp.net/attachments/1105198692044124170/1108273488273346590/Untitled-2023-05-16-1117.png
 

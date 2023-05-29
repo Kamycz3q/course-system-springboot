@@ -14,6 +14,7 @@ import java.util.Optional;
 public class LecturerService {
 
     private final LecturerRepository lecturerRepository;
+    //tutaj nie powinienem korzystac
     private final CustomerRepository customerRepository;
 
     @Autowired
@@ -29,7 +30,6 @@ public class LecturerService {
             throw new Exception("customer dont exists!");
         }
         CustomerEntity customerEntity = optionalCustomer.get();
-        //check permissions
 
         //check is there no lecturer account
         LecturerEntity optionalLecturerEntity = lecturerRepository.getLecturerByCustomerId(userId);

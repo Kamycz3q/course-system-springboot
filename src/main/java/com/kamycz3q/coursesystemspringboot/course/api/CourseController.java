@@ -1,13 +1,16 @@
-package com.kamycz3q.coursesystemspringboot.course;
+package com.kamycz3q.coursesystemspringboot.course.api;
 
 
-import com.kamycz3q.coursesystemspringboot.course.models.CourseDTO;
-import com.kamycz3q.coursesystemspringboot.course.models.CreateCourseRequest;
+import com.kamycz3q.coursesystemspringboot.course.logic.CourseService;
+import com.kamycz3q.coursesystemspringboot.course.api.dto.CourseDTO;
+import com.kamycz3q.coursesystemspringboot.course.api.dto.CreateCourseRequest;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.Enrollment;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.models.EnrollmentDTO;
 import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("/api/v1/course")
@@ -55,6 +58,10 @@ public class CourseController {
         courseService.updateCourse(req, id);
     }
 
+    @PatchMapping("/edit/setDate/{id}/{startTimestamp}/{endTimestamp}")
+    public void setDate(@PathVariable("id") Long id, @PathVariable("startTimestamp") Timestamp startTimestamp, @PathVariable("endTimestamp") Timestamp endTimestamp) {
+        courseService.setDate(id, startTimestamp, endTimestamp);
+    }
     //dla czlonka
 
 }
