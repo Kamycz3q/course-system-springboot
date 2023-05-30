@@ -17,6 +17,7 @@ public class CourseEntity {
     private String name;
     private String description;
     private Float cost;
+    private Integer membersLimit;
     @ManyToOne(cascade = CascadeType.ALL)
     private LecturerEntity lecturerEntity;
     private Timestamp startDate;

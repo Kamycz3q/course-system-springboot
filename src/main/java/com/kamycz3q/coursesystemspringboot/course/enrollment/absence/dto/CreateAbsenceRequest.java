@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 @Validated
 public record CreateAbsenceRequest(
+        @NotEmpty Long customerId,
         @NotEmpty Timestamp startTimestamp,
         @NotEmpty Timestamp endTimestamp,
         @NotEmpty Long courseId

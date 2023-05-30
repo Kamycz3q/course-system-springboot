@@ -9,6 +9,7 @@ import com.kamycz3q.coursesystemspringboot.course.enrollment.Enrollment;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.models.EnrollmentDTO;
 import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -67,8 +68,13 @@ public class CourseController {
 
     //absence
     @PostMapping("/edit/absence")
-    public void addAbsence(@RequestBody CreateAbsenceRequest req) {
+    public ResponseEntity<String> addAbsence(@RequestBody CreateAbsenceRequest req) {
+        return courseService.addAbsence(req);
+    }
 
+    @DeleteMapping("/delete/absence/{id}")
+    public ResponseEntity<String> deleteAbsence(@PathVariable("id") Long id) {
+        return courseService.removeAbsence(id);
     }
 
 

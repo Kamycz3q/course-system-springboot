@@ -1,9 +1,9 @@
 package com.kamycz3q.coursesystemspringboot.course.enrollment.absence;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.kamycz3q.coursesystemspringboot.course.enrollment.Enrollment;
+import com.kamycz3q.coursesystemspringboot.course.persistence.CourseEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +18,8 @@ public class Absence {
     private Long id;
     private Timestamp startTimestamp;
     private Timestamp endTimestamp;
-    private Long courseId;
-    private Long enrollmentId;
+    @ManyToOne
+    private CourseEntity Course;
+    @OneToOne
+    private Enrollment enrollment;
 }

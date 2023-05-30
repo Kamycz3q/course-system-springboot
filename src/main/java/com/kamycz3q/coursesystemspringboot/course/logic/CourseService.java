@@ -1,52 +1,44 @@
 package com.kamycz3q.coursesystemspringboot.course.logic;
 
 
-import com.kamycz3q.coursesystemspringboot.course.enrollment.models.EnrollmentDTO;
-import com.kamycz3q.coursesystemspringboot.course.persistence.CourseEntity;
-import com.kamycz3q.coursesystemspringboot.course.persistence.CourseRepository;
 import com.kamycz3q.coursesystemspringboot.course.api.dto.CourseDTO;
 import com.kamycz3q.coursesystemspringboot.course.api.dto.CreateCourseRequest;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.Enrollment;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.EnrollmentRepository;
+import com.kamycz3q.coursesystemspringboot.course.enrollment.absence.Absence;
+import com.kamycz3q.coursesystemspringboot.course.enrollment.absence.AbsenceRepository;
+import com.kamycz3q.coursesystemspringboot.course.enrollment.absence.dto.AbsenceDTO;
+import com.kamycz3q.coursesystemspringboot.course.enrollment.absence.dto.CreateAbsenceRequest;
+import com.kamycz3q.coursesystemspringboot.course.enrollment.models.EnrollmentDTO;
+import com.kamycz3q.coursesystemspringboot.course.persistence.CourseEntity;
+import com.kamycz3q.coursesystemspringboot.course.persistence.CourseRepository;
 import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerEntity;
 import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerRepository;
 import com.kamycz3q.coursesystemspringboot.exception.ApiNotFoundException;
 import com.kamycz3q.coursesystemspringboot.lecturer.persistence.LecturerRepository;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class CourseService {
     private final CourseRepository courseRepository;
     private final LecturerRepository lecturerRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final CustomerRepository customerRepository;
+    private final AbsenceRepository absenceRepository;
 
-    @Autowired
-    public CourseService(CourseRepository courseRepository, LecturerRepository lecturerRepository, EnrollmentRepository enrollmentRepository, CustomerRepository customerRepository) {
-
-        this.courseRepository = courseRepository;
-        this.lecturerRepository = lecturerRepository;
-        this.enrollmentRepository = enrollmentRepository;
-        this.customerRepository = customerRepository;
-    }
 
     public CourseDTO courseDTOFromCourse(@NotNull CourseEntity courseEntity) {
-        return new CourseDTO(
-                courseEntity.getName(),
-                courseEntity.getDescription(),
-                courseEntity.getCost(),
-                courseEntity.getLecturerEntity(),
-                courseEntity.getStartDate(),
-                courseEntity.getEndDate()
-        );
+        return CourseDTO.fromCourse(courseEntity);
     }
 
     public EnrollmentDTO participantDTOFromPArticipant(@NonNull Enrollment participant) {
@@ -124,6 +116,41 @@ public class CourseService {
         courseEntity.setStartDate(timestampStart);
         courseEntity.setEndDate(timestampEnd);
         courseRepository.save(courseEntity);
+    }
+
+
+    public ResponseEntity addAbsence(CreateAbsenceRequest req) {
+        Optional<CourseEntity> optionalCourse = courseRepository.findById(req.courseId());
+        Optional<Enrollment> optionalEnroll = enrollmentRepository.findByCourseIdAndCustomerId(req.courseId(), req.customerId());
+
+        if (optionalCourse.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Course not found");
+        }
+
+        if (optionalEnroll.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Customer enrollment not found in this course");
+        }
+
+        Absence absence = new Absence();
+        absence.setCourse(optionalCourse.get());
+        absence.setEnrollment(optionalEnroll.get());
+        absence.setStartTimestamp(req.startTimestamp());
+        absence.setEndTimestamp(req.endTimestamp());
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(AbsenceDTO.fromAbsence(absenceRepository.save(absence)));
+    }
+
+    public ResponseEntity removeAbsence(Long absenceId) {
+        Optional<Absence> absenceOptional = absenceRepository.findById(absenceId);
+        if (absenceOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Absence not found");
+        }
+        absenceRepository.delete(absenceOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Canceled absence");
     }
 
 

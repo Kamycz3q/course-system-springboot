@@ -11,6 +11,6 @@ public class Enrollment {
     @Id
     @GeneratedValue
     private Long id;
-    private Long CustomerId;
+    private Long customerId;
     private Long courseId;
 }
