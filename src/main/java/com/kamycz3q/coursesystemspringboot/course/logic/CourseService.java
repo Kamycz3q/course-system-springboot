@@ -16,6 +16,8 @@ import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerEntity;
 import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerRepository;
 import com.kamycz3q.coursesystemspringboot.exception.ApiNotFoundException;
 import com.kamycz3q.coursesystemspringboot.lecturer.persistence.LecturerRepository;
+import com.kamycz3q.coursesystemspringboot.microservices.MicroServicesManager;
+import com.kamycz3q.coursesystemspringboot.microservices.enums.MicroServiceAction;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +26,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -35,6 +39,7 @@ public class CourseService {
     private final EnrollmentRepository enrollmentRepository;
     private final CustomerRepository customerRepository;
     private final AbsenceRepository absenceRepository;
+    private final MicroServicesManager microServicesManager;
 
 
     public CourseDTO courseDTOFromCourse(@NotNull CourseEntity courseEntity) {
@@ -72,6 +77,7 @@ public class CourseService {
         Enrollment participant = new Enrollment();
         participant.setCustomerId(customerId);
         participant.setCourseId(courseId);
+        microServicesManager.performAction(MicroServiceAction.COURSE_DATE_CHANGED, (HashMap<String, ?>) Map.of("courseId", courseId));
         return enrollmentRepository.save(participant);
     }
 
@@ -116,6 +122,7 @@ public class CourseService {
         courseEntity.setStartDate(timestampStart);
         courseEntity.setEndDate(timestampEnd);
         courseRepository.save(courseEntity);
+        microServicesManager.performAction(MicroServiceAction.COURSE_DATE_CHANGED, (HashMap<String, ?>) Map.of("courseId", courseId));
     }
 
 
