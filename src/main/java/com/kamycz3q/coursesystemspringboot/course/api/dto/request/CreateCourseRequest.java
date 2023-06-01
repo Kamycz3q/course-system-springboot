@@ -1,4 +1,4 @@
-package com.kamycz3q.coursesystemspringboot.course.api.dto;
+package com.kamycz3q.coursesystemspringboot.course.api.dto.request;
 
 public record CreateCourseRequest (
     String name,

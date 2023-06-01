@@ -1,8 +1,11 @@
 package com.kamycz3q.coursesystemspringboot.customer.persistence;
 
+import com.kamycz3q.coursesystemspringboot.course.certificate.persistance.CertificateEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Setter
@@ -17,4 +20,6 @@ public class CustomerEntity {
     private PersonalData personalData;
     @Embedded
     private CompanyData companyData;
+    @ManyToOne
+    private List<CertificateEntity> certificates;
 }

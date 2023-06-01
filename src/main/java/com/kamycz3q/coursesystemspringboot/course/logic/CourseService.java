@@ -2,7 +2,7 @@ package com.kamycz3q.coursesystemspringboot.course.logic;
 
 
 import com.kamycz3q.coursesystemspringboot.course.api.dto.CourseDTO;
-import com.kamycz3q.coursesystemspringboot.course.api.dto.CreateCourseRequest;
+import com.kamycz3q.coursesystemspringboot.course.api.dto.request.CreateCourseRequest;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.Enrollment;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.EnrollmentRepository;
 import com.kamycz3q.coursesystemspringboot.course.enrollment.absence.Absence;

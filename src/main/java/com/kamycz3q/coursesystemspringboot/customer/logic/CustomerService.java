@@ -1,11 +1,14 @@
 package com.kamycz3q.coursesystemspringboot.customer.logic;
 
-import com.kamycz3q.coursesystemspringboot.customer.api.dto.*;
-import com.kamycz3q.coursesystemspringboot.customer.persistence.*;
-import com.kamycz3q.coursesystemspringboot.exception.ApiNotFoundException;
-import com.kamycz3q.coursesystemspringboot.exception.ApiWrongRequestException;
+import com.kamycz3q.coursesystemspringboot.customer.api.dto.CompanyDataDTO;
+import com.kamycz3q.coursesystemspringboot.customer.api.dto.CustomerDTO;
+import com.kamycz3q.coursesystemspringboot.customer.api.dto.PersonalDataDTO;
+import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerEntity;
+import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerEntityMapper;
+import com.kamycz3q.coursesystemspringboot.customer.persistence.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,38 +22,46 @@ import static java.util.stream.Collectors.toList;
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerEntityMapper customerEntityMapper;
-    public CustomerEntity createCustomerFromData(PersonalDataDTO personalDataDTO, CompanyDataDTO companyDataDTO) {
+    public ResponseEntity<?> createCustomerFromData(PersonalDataDTO personalDataDTO, CompanyDataDTO companyDataDTO) {
         if (companyDataDTO.nip() == null && companyDataDTO.regon() == null) {
-            throw new ApiWrongRequestException("NIP or REGON empty");
+            return ResponseEntity.badRequest()
+                    .body("NIP or REGON empty");
         }
 
         log.info("PersonalDataDTO: {}", personalDataDTO);
 
         CustomerEntity customerEntity = customerEntityMapper.toEntity(personalDataDTO, companyDataDTO);
-        return customerRepository.save(customerEntity);
+        return ResponseEntity.ok()
+                .body(CustomerDTO.fromCustomer(customerEntity));
     }
 
-    public void deleteCustomer(Long customerId) {
+    public ResponseEntity<?> deleteCustomer(Long customerId) {
         Optional<CustomerEntity> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isEmpty()) {
-            throw new ApiNotFoundException("Customer not found");
+            return ResponseEntity.badRequest()
+                    .body("Customer not found");
         }
         customerRepository.delete(optionalCustomer.get());
+        return ResponseEntity.ok()
+                .body("Customer deleted");
     }
 
-    public List<CustomerDTO> listCustomers() {
-        return customerRepository.findAll()
+    public ResponseEntity<List<CustomerDTO>> listCustomers() {
+        return ResponseEntity.ok()
+                .body(customerRepository.findAll()
                 .stream()
                 .map(CustomerDTO::fromCustomer)
-                .collect(toList());
+                .collect(toList()));
     }
 
-    public CustomerEntity getCustomer(Long customerId) {
+    public ResponseEntity<?> getCustomer(Long customerId) {
         Optional<CustomerEntity> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isEmpty()) {
-            throw new ApiNotFoundException("Customer not found");
+            return ResponseEntity.badRequest()
+                    .body("Customer not found");
         }
-        return optionalCustomer.get();
+        return ResponseEntity.ok()
+                .body(optionalCustomer.get());
     }
 
 
